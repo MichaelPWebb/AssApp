@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">NCEA Revision Quiz</string>
+    <string name="Start">Start Quiz</string>
+    <string name="question">Question</string>
+    <string name="A1">Answer1</string>
+    <string name="A2">Answer2</string>
+    <string name="A3">Answer3</string>
+    <string name="A4">Answer4</string>
+    <string name="Nxt">Next Question</string>
+
+</resources>
