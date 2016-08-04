@@ -16,18 +16,6 @@ public class Quiz extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
     }
 
-    /*public void CheckChecked(){
-
-        for(int i = 1; i <=4; i++){
-
-            String num = Integer.toString(i);
-            String box = "A"+num;
-
-            final TextView textViewToChange = (TextView) findViewById(R.id.textView);
-            textViewToChange.setText(box);
-        }
-
-    }*/
 
     public void onButtonClickCancel(View view) {
 
