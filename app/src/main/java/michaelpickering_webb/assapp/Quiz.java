@@ -1,193 +1,303 @@
 package michaelpickering_webb.assapp;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+import android.os.Handler;
 
 import java.util.ArrayList;
 
+
 public class Quiz extends AppCompatActivity {
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+    QandA question1 = new QandA("Which of the following does Copyright protect",
+            "All of the above","Written work made by the owner","Digital work","All of the above","");
+    QandA question2 = new QandA("When is Copyright initalized", "As soon as you make the product",
+            "When you fill out the paper work","As soon as you make the product"
+            ,"Once the product is in demand","When the product has been copied by someone else");
+    QandA question3 = new QandA("The Privacy act protects you from?",
+            "Your photos or information being used without permission","Your photos or information being used without permission",
+            "People looking you up on facebook","Your work being stolen","None of the above");
+
+    public int i = 0;
+    ArrayList<Boolean> answerList = new ArrayList<Boolean>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-    public static SQLiteDatabase DATABASE;
-
-    public DBHandler database = new DBHandler(Quiz.this, "Database", null, 1);
-
-    public Quiz() {
-
-        database.addQuestion();
+        i=0;
+        startQuiz();
 
     }
 
+    public void startQuiz(){
+
+        ArrayList<QandA> quizlist = getList();
+        QandA quiz = quizlist.get(i);
+
+        final TextView textViewToChange = (TextView) findViewById(R.id.textView);
+        textViewToChange.setText(quiz.getQuestion());
+
+        final TextView textViewToChange1 = (TextView) findViewById(R.id.checkBox);
+        textViewToChange1.setText(quiz.getAnswer1());
+        if(quiz.getAnswer1() == ""){
+            textViewToChange1.setVisibility(View.INVISIBLE);
+        }
+        else{
+            textViewToChange1.setVisibility(View.VISIBLE);
+        }
+
+        final TextView textViewToChange2 = (TextView) findViewById(R.id.checkBox2);
+        textViewToChange2.setText(quiz.getAnswer2());
+        if(quiz.getAnswer2() == ""){
+            textViewToChange2.setVisibility(View.INVISIBLE);
+        }
+        else{
+            textViewToChange2.setVisibility(View.VISIBLE);
+        }
+
+        final TextView textViewToChange3 = (TextView) findViewById(R.id.checkBox3);
+        textViewToChange3.setText(quiz.getAnswer3());
+        if(quiz.getAnswer3() == ""){
+            textViewToChange3.setVisibility(View.INVISIBLE);
+        }
+        else{
+            textViewToChange3.setVisibility(View.VISIBLE);
+        }
+
+        final TextView textViewToChange4 = (TextView) findViewById(R.id.checkBox4);
+        textViewToChange4.setText(quiz.getAnswer4());
+        if(quiz.getAnswer4() == ""){
+            textViewToChange4.setVisibility(View.INVISIBLE);
+        }
+        else{
+            textViewToChange4.setVisibility(View.VISIBLE);
+        }
 
 
-    public static void setDatabase(SQLiteDatabase db){
-
-        DATABASE = db;
     }
 
-    public static SQLiteDatabase getDatabase(){
+    public ArrayList<QandA> getList(){
 
-        return DATABASE;
+        ArrayList<QandA> QnAList = new ArrayList<QandA>();
+        QnAList.add(question1);
+        QnAList.add(question2);
+        QnAList.add(question3);
+
+        return QnAList;
+
     }
-    int i = 0;
+
+    public ArrayList<Boolean> getAnswerList(){
+
+        ArrayList<Boolean> boolList = answerList;
+
+        return boolList;
+
+    }
 
 
     public void onButtonClickCancel(View view) {
 
-        database.findQuestion(1, view);
-
-        if (((CheckBox) findViewById(R.id.checkBox)).isChecked()) {
-
-
-        } else if (((CheckBox) findViewById(R.id.checkBox2)).isChecked()) {
+        final ArrayList<QandA> quizlist = getList();
+        QandA quiz = quizlist.get(i);
 
 
-        } else if (((CheckBox) findViewById(R.id.checkBox3)).isChecked()) {
+        if(getAnswered() == quiz.getAnswer()){
+
+            final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
+            textViewToChange.setVisibility(View.VISIBLE);
+            textViewToChange.setText("Correct");
+            textViewToChange.setTextColor(Color.parseColor("#006F00"));
+            textViewToChange.setBackgroundColor(Color.parseColor("#00FF00"));
+            answerList.add(true);
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+
+                    final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
+                    textViewToChange.setText("");
+                    textViewToChange.setVisibility(View.INVISIBLE);
+                    if(i < (quizlist.size()-1)){
+
+                        i++;
+                        startQuiz();
+
+                    }
+                    else{
+
+                        Intent intent = new Intent(Quiz.this,highScore.class);
+                        startActivity(intent);
+
+                    }
 
 
-        } else if (((CheckBox) findViewById(R.id.checkBox4)).isChecked()) {
-
+                }
+            }, 2000);
 
         }
-    }
+        else{
 
-    public void onCheckBox(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
+            final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
+            textViewToChange.setVisibility(View.VISIBLE);
+            textViewToChange.setText("Incorrect, Try Again");
+            textViewToChange.setTextColor(Color.parseColor("#1F0000"));
+            textViewToChange.setBackgroundColor(Color.parseColor("#FF0000"));
+            answerList.add(false);
 
-        // Check which checkbox was clicked
-        switch (view.getId()) {
-            case R.id.checkBox:
-                if (checked) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
 
-                    CheckBox ch3, ch2, ch4;
-                    ch3 = (CheckBox) findViewById(R.id.checkBox3);
-                    ch3.setSelected(false);
-                    ch3.setChecked(false);
-                    ch2 = (CheckBox) findViewById(R.id.checkBox2);
-                    ch2.setSelected(false);
-                    ch2.setChecked(false);
-                    ch4 = (CheckBox) findViewById(R.id.checkBox4);
-                    ch4.setSelected(false);
-                    ch4.setChecked(false);
+                    final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
+                    textViewToChange.setText("");
+                    textViewToChange.setVisibility(View.INVISIBLE);
+                    if(i < (quizlist.size()-1)){
+
+                        i++;
+                        startQuiz();
+
+                    }
+                    else{
+
+                        Intent intent = new Intent(Quiz.this,highScore.class);
+                        startActivity(intent);
+
+                    }
+
+
                 }
-
-                break;
-            case R.id.checkBox2:
-                if (checked) {
-
-                    CheckBox ch, ch3, ch4;
-                    ch = (CheckBox) findViewById(R.id.checkBox);
-                    ch.setSelected(false);
-                    ch.setChecked(false);
-                    ch3 = (CheckBox) findViewById(R.id.checkBox3);
-                    ch3.setSelected(false);
-                    ch3.setChecked(false);
-                    ch4 = (CheckBox) findViewById(R.id.checkBox4);
-                    ch4.setSelected(false);
-                    ch4.setChecked(false);
-                }
-
-                break;
-            case R.id.checkBox3:
-                if (checked) {
-                    CheckBox ch, ch2, ch4;
-                    ch = (CheckBox) findViewById(R.id.checkBox);
-                    ch.setSelected(false);
-                    ch.setChecked(false);
-                    ch2 = (CheckBox) findViewById(R.id.checkBox2);
-                    ch2.setSelected(false);
-                    ch2.setChecked(false);
-                    ch4 = (CheckBox) findViewById(R.id.checkBox4);
-                    ch4.setSelected(false);
-                    ch4.setChecked(false);
-                }
-
-
-                break;
-            case R.id.checkBox4:
-                if (checked) {
-
-                    CheckBox ch, ch2, ch3;
-                    ch = (CheckBox) findViewById(R.id.checkBox);
-                    ch.setSelected(false);
-                    ch.setChecked(false);
-                    ch2 = (CheckBox) findViewById(R.id.checkBox2);
-                    ch2.setSelected(false);
-                    ch2.setChecked(false);
-                    ch3 = (CheckBox) findViewById(R.id.checkBox3);
-                    ch3.setSelected(false);
-                    ch3.setChecked(false);
-                }
-
-                break;
+            }, 2000);
 
         }
+
+
+    }
+
+    public String getAnswered(){
+
+        String myAnswer = "";
+        CheckBox ch;
+
+        if(((CheckBox) findViewById(R.id.checkBox)).isChecked()){
+
+            final TextView textViewToChange5 = (TextView) findViewById(R.id.checkBox);
+            myAnswer = (String) textViewToChange5.getText();
+            ch =(CheckBox) findViewById(R.id.checkBox);
+            ch.setChecked(false);
+
+        }
+        else if(((CheckBox) findViewById(R.id.checkBox2)).isChecked()){
+
+            final TextView textViewToChange5 = (TextView) findViewById(R.id.checkBox2);
+            myAnswer = (String) textViewToChange5.getText();
+            ch =(CheckBox) findViewById(R.id.checkBox2);
+            ch.setChecked(false);
+
+        }
+        else if(((CheckBox) findViewById(R.id.checkBox3)).isChecked()){
+
+            final TextView textViewToChange5 = (TextView) findViewById(R.id.checkBox3);
+            myAnswer = (String) textViewToChange5.getText();
+            ch =(CheckBox) findViewById(R.id.checkBox3);
+            ch.setChecked(false);
+
+        }
+        else if(((CheckBox) findViewById(R.id.checkBox4)).isChecked()){
+
+            final TextView textViewToChange5 = (TextView) findViewById(R.id.checkBox4);
+            myAnswer = (String) textViewToChange5.getText();
+            ch =(CheckBox) findViewById(R.id.checkBox4);
+            ch.setChecked(false);
+
+        }
+
+
+        return myAnswer;
+
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        public void onCheckBox(View view) {
+            // Is the view now checked?
+            boolean checked = ((CheckBox) view).isChecked();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Quiz Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://michaelpickering_webb.assapp/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
+            // Check which checkbox was clicked
+            switch(view.getId()) {
+                case R.id.checkBox:
+                    if (checked) {
+
+                        CheckBox ch3,ch2,ch4;
+                        ch3 = (CheckBox) findViewById(R.id.checkBox3);
+                        ch3.setSelected(false);
+                        ch3.setChecked(false);
+                        ch2 = (CheckBox) findViewById(R.id.checkBox2);
+                        ch2.setSelected(false);
+                        ch2.setChecked(false);
+                        ch4 = (CheckBox) findViewById(R.id.checkBox4);
+                        ch4.setSelected(false);
+                        ch4.setChecked(false);
+                    }
+
+                    break;
+                case R.id.checkBox2:
+                    if (checked) {
+
+                        CheckBox ch,ch3,ch4;
+                        ch = (CheckBox) findViewById(R.id.checkBox);
+                        ch.setSelected(false);
+                        ch.setChecked(false);
+                        ch3 = (CheckBox) findViewById(R.id.checkBox3);
+                        ch3.setSelected(false);
+                        ch3.setChecked(false);
+                        ch4 = (CheckBox) findViewById(R.id.checkBox4);
+                        ch4.setSelected(false);
+                        ch4.setChecked(false);
+                    }
+
+                    break;
+                case R.id.checkBox3:
+                    if (checked) {
+                        CheckBox ch,ch2,ch4;
+                        ch = (CheckBox) findViewById(R.id.checkBox);
+                        ch.setSelected(false);
+                        ch.setChecked(false);
+                        ch2 = (CheckBox) findViewById(R.id.checkBox2);
+                        ch2.setSelected(false);
+                        ch2.setChecked(false);
+                        ch4 = (CheckBox) findViewById(R.id.checkBox4);
+                        ch4.setSelected(false);
+                        ch4.setChecked(false);
+                    }
+
+
+                    break;
+                case R.id.checkBox4:
+                    if (checked) {
+
+                        CheckBox ch,ch2,ch3;
+                        ch = (CheckBox) findViewById(R.id.checkBox);
+                        ch.setSelected(false);
+                        ch.setChecked(false);
+                        ch2 = (CheckBox) findViewById(R.id.checkBox2);
+                        ch2.setSelected(false);
+                        ch2.setChecked(false);
+                        ch3 = (CheckBox) findViewById(R.id.checkBox3);
+                        ch3.setSelected(false);
+                        ch3.setChecked(false);
+                    }
+
+                    break;
+
+            }
+        }
+
+
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Quiz Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://michaelpickering_webb.assapp/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-    }
-}
 

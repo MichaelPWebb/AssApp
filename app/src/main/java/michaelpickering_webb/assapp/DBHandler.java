@@ -1,4 +1,4 @@
-package michaelpickering_webb.assapp;
+/*package michaelpickering_webb.assapp;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.view.View;
 /**
  * Created by michael on 4/08/2016.
  */
-public class DBHandler extends SQLiteOpenHelper{
+/*public class DBHandler extends SQLiteOpenHelper{
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "QuestionsAndAnswersDB.db";
@@ -81,7 +81,7 @@ public class DBHandler extends SQLiteOpenHelper{
         db.close();
     }*/
 
-    public Question findQuestion(int num, View view) {
+  /*  public Question findQuestion(int num, View view) {
         String query = "Select * FROM " + TABLE_QandA + " WHERE " + COLUMN_ID + " =  \"" + num + "\"";
         /*String query2 = "Select * FROM " + TABLE_QandA + " WHERE " + COLUMN_Answer1 + " =  \"" + item + "\"";
         String query3 = "Select * FROM " + TABLE_QandA + " WHERE " + COLUMN_Answer2 + " =  \"" + item + "\"";
@@ -89,7 +89,7 @@ public class DBHandler extends SQLiteOpenHelper{
         String query5 = "Select * FROM " + TABLE_QandA + " WHERE " + COLUMN_Answer4 + " =  \"" + item + "\"";
         String query6 = "Select * FROM " + TABLE_QandA + " WHERE " + COLUMN_Answer + " =  \"" + item + "\"";*/
 
-        SQLiteDatabase db = this.getWritableDatabase();
+     /*   SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
 
@@ -133,5 +133,5 @@ public class DBHandler extends SQLiteOpenHelper{
 
         return false;
     }*/
-
-}
+/*
+}*/

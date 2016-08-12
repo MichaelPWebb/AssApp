@@ -1,4 +1,4 @@
-package michaelpickering_webb.assapp;
+/*package michaelpickering_webb.assapp;
 
 import android.view.View;
 import android.widget.CheckBox;
@@ -6,7 +6,7 @@ import android.widget.CheckBox;
 /**
  * Created by michael on 4/08/2016.
  */
-public class Question {
+/*public class Question {
 
     public String question;
     public String Answer1;
@@ -127,4 +127,4 @@ public class Question {
 
 
 
-}
+}*/
