@@ -1,6 +1,7 @@
 package michaelpickering_webb.assapp;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,17 +15,18 @@ import java.util.ArrayList;
 
 public class Quiz extends AppCompatActivity {
 
-    QandA question1 = new QandA("Which of the following does Copyright protect",
+    static QandA question1 = new QandA("Which of the following does Copyright protect",
             "All of the above","Written work made by the owner","Digital work","All of the above","");
-    QandA question2 = new QandA("When is Copyright initalized", "As soon as you make the product",
+    static QandA question2 = new QandA("When is Copyright initalized", "As soon as you make the product",
             "When you fill out the paper work","As soon as you make the product"
             ,"Once the product is in demand","When the product has been copied by someone else");
-    QandA question3 = new QandA("The Privacy act protects you from?",
+    static QandA question3 = new QandA("The Privacy act protects you from?",
             "Your photos or information being used without permission","Your photos or information being used without permission",
             "People looking you up on facebook","Your work being stolen","None of the above");
 
     public int i = 0;
-    ArrayList<Boolean> answerList = new ArrayList<Boolean>();
+    static ArrayList<Boolean> answerList = new ArrayList<Boolean>();
+    static ArrayList<QandA> QnAList = new ArrayList<QandA>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class Quiz extends AppCompatActivity {
 
         final TextView textViewToChange1 = (TextView) findViewById(R.id.checkBox);
         textViewToChange1.setText(quiz.getAnswer1());
-        if(quiz.getAnswer1() == ""){
+        if(quiz.getAnswer1().equals("")){
             textViewToChange1.setVisibility(View.INVISIBLE);
         }
         else{
@@ -63,7 +65,7 @@ public class Quiz extends AppCompatActivity {
 
         final TextView textViewToChange3 = (TextView) findViewById(R.id.checkBox3);
         textViewToChange3.setText(quiz.getAnswer3());
-        if(quiz.getAnswer3() == ""){
+        if(quiz.getAnswer3().equals("")){
             textViewToChange3.setVisibility(View.INVISIBLE);
         }
         else{
@@ -72,7 +74,7 @@ public class Quiz extends AppCompatActivity {
 
         final TextView textViewToChange4 = (TextView) findViewById(R.id.checkBox4);
         textViewToChange4.setText(quiz.getAnswer4());
-        if(quiz.getAnswer4() == ""){
+        if(quiz.getAnswer4().equals("")){
             textViewToChange4.setVisibility(View.INVISIBLE);
         }
         else{
@@ -82,9 +84,8 @@ public class Quiz extends AppCompatActivity {
 
     }
 
-    public ArrayList<QandA> getList(){
+    public static ArrayList<QandA> getList(){
 
-        ArrayList<QandA> QnAList = new ArrayList<QandA>();
         QnAList.add(question1);
         QnAList.add(question2);
         QnAList.add(question3);
@@ -93,7 +94,7 @@ public class Quiz extends AppCompatActivity {
 
     }
 
-    public ArrayList<Boolean> getAnswerList(){
+    public static ArrayList<Boolean> getAnswerList(){
 
         ArrayList<Boolean> boolList = answerList;
 
@@ -108,7 +109,7 @@ public class Quiz extends AppCompatActivity {
         QandA quiz = quizlist.get(i);
 
 
-        if(getAnswered() == quiz.getAnswer()){
+        if(getAnswered().equals(quiz.getAnswer())){
 
             final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
             textViewToChange.setVisibility(View.VISIBLE);
@@ -139,14 +140,14 @@ public class Quiz extends AppCompatActivity {
 
 
                 }
-            }, 2000);
+            }, 500);
 
         }
         else{
 
             final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
             textViewToChange.setVisibility(View.VISIBLE);
-            textViewToChange.setText("Incorrect, Try Again");
+            textViewToChange.setText("Incorrect");
             textViewToChange.setTextColor(Color.parseColor("#1F0000"));
             textViewToChange.setBackgroundColor(Color.parseColor("#FF0000"));
             answerList.add(false);
@@ -173,7 +174,7 @@ public class Quiz extends AppCompatActivity {
 
 
                 }
-            }, 2000);
+            }, 500);
 
         }
 
