@@ -11,88 +11,89 @@ import android.widget.TextView;
 import android.os.Handler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Quiz extends AppCompatActivity {
 
-    static QandA question1 = new QandA("Which of the following does Copyright protect",
+    DBHandler db = new DBHandler(this);
+
+    /*static QandA question1 = new QandA("Which of the following does Copyright protect",
             "All of the above","Written work made by the owner","Digital work","All of the above","");
     static QandA question2 = new QandA("When is Copyright initalized", "As soon as you make the product",
             "When you fill out the paper work","As soon as you make the product"
             ,"Once the product is in demand","When the product has been copied by someone else");
     static QandA question3 = new QandA("The Privacy act protects you from?",
             "Your photos or information being used without permission","Your photos or information being used without permission",
-            "People looking you up on facebook","Your work being stolen","None of the above");
+            "People looking you up on facebook","Your work being stolen","None of the above");*/
 
     public int i = 0;
-    static ArrayList<Boolean> answerList = new ArrayList<Boolean>();
-    static ArrayList<QandA> QnAList = new ArrayList<QandA>();
+    public int check = 0;
+    static ArrayList<Boolean> answerList = new ArrayList<>();
+    ArrayList<Question> quizlist = new ArrayList<>();
+    //static ArrayList<QandA> QnAList = new ArrayList<>();
+    static ArrayList<String> myAnswerList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         i=0;
+        /*QnAList.add(question1);
+        QnAList.add(question2);
+        QnAList.add(question3);*/
+        quizlist = db.getAllQuestions();
         startQuiz();
 
     }
 
     public void startQuiz(){
 
-        ArrayList<QandA> quizlist = getList();
-        QandA quiz = quizlist.get(i);
+
+        Question quiz = quizlist.get(i);
 
         final TextView textViewToChange = (TextView) findViewById(R.id.textView);
-        textViewToChange.setText(quiz.getQuestion());
+        textViewToChange.setText(quizlist.get(i).getQUESTION());
 
         final TextView textViewToChange1 = (TextView) findViewById(R.id.checkBox);
-        textViewToChange1.setText(quiz.getAnswer1());
-        if(quiz.getAnswer1().equals("")){
-            textViewToChange1.setVisibility(View.INVISIBLE);
+        textViewToChange1.setText(quiz.getOPTA());
+        if(quiz.getOPTA().equals("")){
+            textViewToChange1.setVisibility(View.VISIBLE);
         }
         else{
             textViewToChange1.setVisibility(View.VISIBLE);
         }
 
         final TextView textViewToChange2 = (TextView) findViewById(R.id.checkBox2);
-        textViewToChange2.setText(quiz.getAnswer2());
-        if(quiz.getAnswer2() == ""){
-            textViewToChange2.setVisibility(View.INVISIBLE);
+        textViewToChange2.setText(quiz.getOPTB());
+        if(quiz.getOPTB().equals("")){
+            textViewToChange2.setVisibility(View.VISIBLE);
         }
         else{
             textViewToChange2.setVisibility(View.VISIBLE);
         }
 
         final TextView textViewToChange3 = (TextView) findViewById(R.id.checkBox3);
-        textViewToChange3.setText(quiz.getAnswer3());
-        if(quiz.getAnswer3().equals("")){
-            textViewToChange3.setVisibility(View.INVISIBLE);
+        textViewToChange3.setText(quiz.getOPTC());
+        if(quiz.getOPTC().equals("")){
+            textViewToChange3.setVisibility(View.VISIBLE);
         }
         else{
             textViewToChange3.setVisibility(View.VISIBLE);
         }
 
-        final TextView textViewToChange4 = (TextView) findViewById(R.id.checkBox4);
+        /*final TextView textViewToChange4 = (TextView) findViewById(R.id.checkBox4);
         textViewToChange4.setText(quiz.getAnswer4());
         if(quiz.getAnswer4().equals("")){
             textViewToChange4.setVisibility(View.INVISIBLE);
         }
         else{
             textViewToChange4.setVisibility(View.VISIBLE);
-        }
+        }*/
 
 
     }
 
-    public static ArrayList<QandA> getList(){
-
-        QnAList.add(question1);
-        QnAList.add(question2);
-        QnAList.add(question3);
-
-        return QnAList;
-
-    }
 
     public static ArrayList<Boolean> getAnswerList(){
 
@@ -102,89 +103,142 @@ public class Quiz extends AppCompatActivity {
 
     }
 
+    public static ArrayList<String> getMyAnswerList(){
+
+        return myAnswerList;
+    }
 
     public void onButtonClickCancel(View view) {
 
-        final ArrayList<QandA> quizlist = getList();
-        QandA quiz = quizlist.get(i);
+        List<Question> quest = db.getAllQuestions();
+        final List<Question> quizlist = quest;
+        final Question quiz = quizlist.get(i);
+        final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
+
+        if(check == 0) {
+
+            textViewToChange.setTextSize(40);
+
+            final String answer = getAnswered();
+
+            if (answer.equals(quiz.getANSWER())) {
+
+                textViewToChange.setVisibility(View.VISIBLE);
+                textViewToChange.setText("Correct");
+                textViewToChange.setTextColor(Color.parseColor("#006F00"));
+                textViewToChange.setBackgroundColor(Color.parseColor("#00FF00"));
+                answerList.add(true);
+                myAnswerList.add(answer);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+
+                        textViewToChange.setText("");
+                        textViewToChange.setVisibility(View.INVISIBLE);
+                        if (i < (quizlist.size() - 1)) {
+
+                            i++;
+                            startQuiz();
+
+                        } else {
+
+                            Intent intent = new Intent(Quiz.this, highScore.class);
+                            startActivity(intent);
+
+                        }
 
 
-        if(getAnswered().equals(quiz.getAnswer())){
+                    }
+                }, 750);
 
-            final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
-            textViewToChange.setVisibility(View.VISIBLE);
-            textViewToChange.setText("Correct");
-            textViewToChange.setTextColor(Color.parseColor("#006F00"));
-            textViewToChange.setBackgroundColor(Color.parseColor("#00FF00"));
-            answerList.add(true);
+            } else if (!answer.equals("nothing")) {
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
+                textViewToChange.setVisibility(View.VISIBLE);
+                textViewToChange.setText("Incorrect");
+                textViewToChange.setTextColor(Color.parseColor("#0F0000"));
+                textViewToChange.setBackgroundColor(Color.parseColor("#FF0000"));
+                answerList.add(false);
+                myAnswerList.add(answer);
+                check = 1;
 
-                    final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
-                    textViewToChange.setText("");
-                    textViewToChange.setVisibility(View.INVISIBLE);
-                    if(i < (quizlist.size()-1)){
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
 
-                        i++;
+                        String view = ("\nYou answered: \n" + answer + "\n\nThis was incorrect, the correct answer was:\n"
+                                + quiz.getANSWER() + "\nPress Next Question again to continue.");
+                        textViewToChange.setTextSize(25);
+                        textViewToChange.setText(view);
+                        textViewToChange.setVisibility(View.VISIBLE);
+                        textViewToChange.setBackgroundColor(Color.parseColor("#CDCDCD"));
+                        CheckBox Change = (CheckBox) findViewById(R.id.checkBox);
+                        Change.setVisibility(View.INVISIBLE);
+                        Change.setText("");
+                        CheckBox Change2 = (CheckBox) findViewById(R.id.checkBox2);
+                        Change2.setVisibility(View.INVISIBLE);
+                        Change2.setText("");
+                        CheckBox Change3 = (CheckBox) findViewById(R.id.checkBox3);
+                        Change3.setVisibility(View.INVISIBLE);
+                        Change3.setText("");
+                        CheckBox Change4 = (CheckBox) findViewById(R.id.checkBox4);
+                        Change4.setVisibility(View.INVISIBLE);
+                        Change4.setText("");
+
+                    }
+                }, 750);
+
+
+            } else if(check == 0 && answer.equals("nothing")){
+
+                textViewToChange.setVisibility(View.VISIBLE);
+                textViewToChange.setText("No Answer Submitted");
+                textViewToChange.setTextColor(Color.parseColor("#0F0000"));
+                textViewToChange.setBackgroundColor(Color.parseColor("#FF0000"));
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+
+                        final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
+                        textViewToChange.setText("");
+                        textViewToChange.setVisibility(View.INVISIBLE);
+
                         startQuiz();
 
-                    }
-                    else{
-
-                        Intent intent = new Intent(Quiz.this,highScore.class);
-                        startActivity(intent);
 
                     }
+                }, 750);
 
-
-                }
-            }, 500);
+            }
 
         }
-        else{
+        else if (check == 1) {
 
-            final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
-            textViewToChange.setVisibility(View.VISIBLE);
-            textViewToChange.setText("Incorrect");
-            textViewToChange.setTextColor(Color.parseColor("#1F0000"));
-            textViewToChange.setBackgroundColor(Color.parseColor("#FF0000"));
-            answerList.add(false);
+            if (i < (quizlist.size() - 1)) {
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
+                i++;
+                startQuiz();
+                textViewToChange.setText("");
 
-                    final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
-                    textViewToChange.setText("");
-                    textViewToChange.setVisibility(View.INVISIBLE);
-                    if(i < (quizlist.size()-1)){
+                check = 0;
 
-                        i++;
-                        startQuiz();
+            }
+            else if(i == (quizlist.size()-1)){
 
-                    }
-                    else{
+                Intent intent = new Intent(Quiz.this, highScore.class);
+                startActivity(intent);
 
-                        Intent intent = new Intent(Quiz.this,highScore.class);
-                        startActivity(intent);
-
-                    }
-
-
-                }
-            }, 500);
+            }
 
         }
-
-
     }
 
     public String getAnswered(){
 
         String myAnswer = "";
         CheckBox ch;
+
 
         if(((CheckBox) findViewById(R.id.checkBox)).isChecked()){
 
@@ -218,7 +272,11 @@ public class Quiz extends AppCompatActivity {
             ch.setChecked(false);
 
         }
+        else{
 
+            myAnswer = "nothing";
+
+        }
 
         return myAnswer;
 

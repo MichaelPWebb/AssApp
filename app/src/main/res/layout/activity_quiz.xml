@@ -7,9 +7,30 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/Bage"
     tools:context="michaelpickering_webb.assapp.Quiz">
 
-    <CheckBox
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/question"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp"
+        />
+
+        <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/A1"
@@ -21,16 +42,6 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/question"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="30sp"
-        />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -66,27 +77,32 @@
         android:layout_below="@+id/checkBox3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="onCheckBox"/>
+        android:onClick="onCheckBox"
+        android:checked="false" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:minHeight="60dp"
-        android:minWidth="300dp"
-        android:textAlignment="center"
-        android:textSize="45sp"
-        android:layout_above="@+id/button2"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:minHeight="60dp"
+            android:minWidth="300dp"
+            android:textAlignment="center"
+            android:textSize="40sp"
+            android:layout_above="@+id/button2"
+            android:layout_centerHorizontal="true" />
 
-    <Button
+        <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Nxt"
         android:id="@+id/button2"
-        android:textSize="21sp"
+        android:textSize="40sp"
         android:clickable="true"
         android:onClick="onButtonClickCancel"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    </TableLayout>
+    </ScrollView>
+
 </RelativeLayout>
