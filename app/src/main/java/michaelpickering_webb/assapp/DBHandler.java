@@ -42,11 +42,16 @@ public class DBHandler extends SQLiteOpenHelper {
 // db.close();
     }
     private void addQuestion() {
-        Question q1 = new Question("5+2 = ?", "7", "8", "6", "7");
+        Question q1 = new Question("Which of the following does Copyright protect",
+                "All of the above","Written work made by the owner","Digital work","All of the above","");
         addQuestion(q1);
-        Question q2 = new Question("2+18 = ?", "18", "19", "20", "20");
+        Question q2 = new Question("When is Copyright initalized", "As soon as you make the product",
+                "When you fill out the paper work","As soon as you make the product"
+                ,"Once the product is in demand","When the product has been copied by someone else");
         this.addQuestion(q2);
-        Question q3 = new Question("10-3 = ?", "6", "7", "8", "7");
+        Question q3 = new Question("The Privacy act protects you from?",
+                "Your photos or information being used without permission","Your photos or information being used without permission",
+                "People looking you up on facebook","Your work being stolen","None of the above");
         this.addQuestion(q3);
 // END
     }

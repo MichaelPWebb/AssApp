@@ -18,20 +18,10 @@ public class Quiz extends AppCompatActivity {
 
     DBHandler db = new DBHandler(this);
 
-    /*static QandA question1 = new QandA("Which of the following does Copyright protect",
-            "All of the above","Written work made by the owner","Digital work","All of the above","");
-    static QandA question2 = new QandA("When is Copyright initalized", "As soon as you make the product",
-            "When you fill out the paper work","As soon as you make the product"
-            ,"Once the product is in demand","When the product has been copied by someone else");
-    static QandA question3 = new QandA("The Privacy act protects you from?",
-            "Your photos or information being used without permission","Your photos or information being used without permission",
-            "People looking you up on facebook","Your work being stolen","None of the above");*/
-
     public int i = 0;
     public int check = 0;
     static ArrayList<Boolean> answerList = new ArrayList<>();
     ArrayList<Question> quizlist = new ArrayList<>();
-    //static ArrayList<QandA> QnAList = new ArrayList<>();
     static ArrayList<String> myAnswerList = new ArrayList<>();
 
     @Override
@@ -39,13 +29,11 @@ public class Quiz extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         i=0;
-        /*QnAList.add(question1);
-        QnAList.add(question2);
-        QnAList.add(question3);*/
         quizlist = db.getAllQuestions();
         startQuiz();
 
     }
+
 
     public void startQuiz(){
 
@@ -82,14 +70,14 @@ public class Quiz extends AppCompatActivity {
             textViewToChange3.setVisibility(View.VISIBLE);
         }
 
-        /*final TextView textViewToChange4 = (TextView) findViewById(R.id.checkBox4);
-        textViewToChange4.setText(quiz.getAnswer4());
-        if(quiz.getAnswer4().equals("")){
+        final TextView textViewToChange4 = (TextView) findViewById(R.id.checkBox4);
+        textViewToChange4.setText(quiz.getOPTD());
+        if(quiz.getOPTD().equals("")){
             textViewToChange4.setVisibility(View.INVISIBLE);
         }
         else{
             textViewToChange4.setVisibility(View.VISIBLE);
-        }*/
+        }
 
 
     }
@@ -145,6 +133,7 @@ public class Quiz extends AppCompatActivity {
 
                             Intent intent = new Intent(Quiz.this, highScore.class);
                             startActivity(intent);
+
 
                         }
 

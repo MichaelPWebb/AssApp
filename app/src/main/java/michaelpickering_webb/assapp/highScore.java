@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class highScore extends AppCompatActivity {
 
+
     public static ArrayList<Boolean> answers = Quiz.getAnswerList();
-    //ArrayList<QandA> quiz = Quiz.getList();
     ArrayList<String> myAnswers = Quiz.getMyAnswerList();
     ArrayList<String> incorrectQList = new ArrayList<>();
     ArrayList<String> incorrectAList = new ArrayList<>();
@@ -30,8 +30,7 @@ public class highScore extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
 
-
-        /*for(int i = 0;i < answers.size() && i < quiz.size(); i++){
+        for(int i = 0;i < answers.size(); i++){
 
             if(answers.get(i).equals(true)){
 
@@ -41,15 +40,12 @@ public class highScore extends AppCompatActivity {
             else{
 
                 incorrectNum++;
-                incorrectQList.add(quiz.get(i).getQuestion());
-                incorrectAList.add(quiz.get(i).getAnswer());
-                myIncorrectAnswer.add(myAnswers.get(i));
 
             }
 
-            MainActivity.Score.add(new HighScoreTable(incorrectQList, incorrectAList, myIncorrectAnswer, correctNum, incorrectNum));
+            MainActivity.Score.add(new HighScoreTable(correctNum, incorrectNum));
 
-        }*/
+        }
 
         fraction = "You got " + HighScoreTable.getCorrect() + "/" + HighScoreTable.getTotal();
 
@@ -75,35 +71,12 @@ public class highScore extends AppCompatActivity {
 
     public void clear(){
 
-        /*for( int i = 0; i < quiz.size();i++){
-
-            quiz.remove(i);
-        }*/
 
         for( int i = 0; i < myAnswers.size();i++){
 
             myAnswers.remove(i);
         }
 
-        for( int i = 0; i < incorrectQList.size();i++){
-
-            incorrectQList.remove(i);
-        }
-
-        for( int i = 0; i < incorrectAList.size();i++){
-
-            incorrectAList.remove(i);
-        }
-
-        for( int i = 0; i < myIncorrectAnswer.size();i++){
-
-            myIncorrectAnswer.remove(i);
-        }
-
-        /*for( int i = 0; i < Quiz.QnAList.size();i++){
-
-            Quiz.QnAList.remove(i);
-        }*/
 
         for( int i = 0; i < answers.size();i++){
 
